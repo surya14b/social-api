@@ -1,15 +1,15 @@
-import User, { findOne } from '../models/user.js';
-import { authenticate } from '../config/passport.js';
+import User from '../models/user.js';
+import passport from '../config/passport.js';
 
 // @route   POST /api/auth/register
 // @desc    Register a user
 // @access  Public
-export async function register(req, res) {
+export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     
     // Check if user already exists
-    let user = await findOne({ email });
+    let user = await User.findOne({ email });
     
     if (user) {
       return res.status(400).json({ message: 'User already exists' });
@@ -40,17 +40,17 @@ export async function register(req, res) {
     console.error('Register error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
 // @route   POST /api/auth/login
 // @desc    Authenticate user & get token
 // @access  Public
-export async function login(req, res) {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     
     // Find user
-    const user = await findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select('+password');
     
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
@@ -85,16 +85,19 @@ export async function login(req, res) {
     console.error('Login error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
-export const googleAuth = authenticate('google', {
+// @route   GET /api/auth/google
+// @desc    Auth with Google
+// @access  Public
+export const googleAuth = passport.authenticate('google', {
   scope: ['profile', 'email']
 });
 
 // @route   GET /api/auth/google/callback
 // @desc    Google auth callback
 // @access  Public
-export function googleCallback(req, res) {
+export const googleCallback = (req, res) => {
   try {
     // Generate JWT
     const token = req.user.generateToken();
@@ -105,16 +108,16 @@ export function googleCallback(req, res) {
     console.error('Google callback error:', error.message);
     res.redirect(`${process.env.FRONTEND_URL}/login/error`);
   }
-}
+};
 
 // @route   GET /api/auth/me
 // @desc    Get current user
 // @access  Private
-export async function getCurrentUser(req, res) {
+export const getCurrentUser = async (req, res) => {
   try {
     res.json(req.user);
   } catch (error) {
     console.error('Get current user error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
-}
+};

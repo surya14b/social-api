@@ -1,16 +1,17 @@
-import { Error } from 'mongoose';
-import FriendRequest, { findOne, findById, countDocuments, find } from '../models/friendRequest.js';
-import { findById as _findById } from '../models/user.js';
+import mongoose from 'mongoose';
+import FriendRequest from '../models/friendRequest.js';
+import User from '../models/user.js';
+import { getPaginationOptions, createPaginationMeta } from '../utils/pagination.js';
 
 // @route   POST /api/friends/request/:userId
 // @desc    Send friend request
 // @access  Private
-export async function sendFriendRequest(req, res) {
+export const sendFriendRequest = async (req, res) => {
   try {
     const { userId } = req.params;
     
     // Check if user exists
-    const user = await _findById(userId);
+    const user = await User.findById(userId);
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -22,7 +23,7 @@ export async function sendFriendRequest(req, res) {
     }
     
     // Check if request already exists
-    const existingRequest = await findOne({
+    const existingRequest = await FriendRequest.findOne({
       $or: [
         { sender: req.user._id, receiver: userId },
         { sender: userId, receiver: req.user._id }
@@ -65,23 +66,23 @@ export async function sendFriendRequest(req, res) {
     console.error('Send friend request error:', error.message);
     
     // Handle invalid ID format
-    if (error instanceof Error.CastError) {
+    if (error instanceof mongoose.Error.CastError) {
       return res.status(400).json({ message: 'Invalid user ID' });
     }
     
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
 // @route   PUT /api/friends/request/:requestId/accept
 // @desc    Accept friend request
 // @access  Private
-export async function acceptFriendRequest(req, res) {
+export const acceptFriendRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
     
     // Find request
-    const request = await findById(requestId);
+    const request = await FriendRequest.findById(requestId);
     
     if (!request) {
       return res.status(404).json({ message: 'Friend request not found' });
@@ -106,23 +107,23 @@ export async function acceptFriendRequest(req, res) {
     console.error('Accept friend request error:', error.message);
     
     // Handle invalid ID format
-    if (error instanceof Error.CastError) {
+    if (error instanceof mongoose.Error.CastError) {
       return res.status(400).json({ message: 'Invalid request ID' });
     }
     
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
 // @route   PUT /api/friends/request/:requestId/reject
 // @desc    Reject friend request
 // @access  Private
-export async function rejectFriendRequest(req, res) {
+export const rejectFriendRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
     
     // Find request
-    const request = await findById(requestId);
+    const request = await FriendRequest.findById(requestId);
     
     if (!request) {
       return res.status(404).json({ message: 'Friend request not found' });
@@ -142,23 +143,23 @@ export async function rejectFriendRequest(req, res) {
     console.error('Reject friend request error:', error.message);
     
     // Handle invalid ID format
-    if (error instanceof Error.CastError) {
+    if (error instanceof mongoose.Error.CastError) {
       return res.status(400).json({ message: 'Invalid request ID' });
     }
     
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
 // @route   GET /api/friends
 // @desc    List all friends
 // @access  Private
-export async function listFriends(req, res) {
+export const listFriends = async (req, res) => {
   try {
-    const { page, limit, skip } = require('../utils/pagination').default.getPaginationOptions(req);
+    const { page, limit, skip } = getPaginationOptions(req);
     
     // Find total number of friends
-    const totalFriendRequests = await countDocuments({
+    const totalFriendRequests = await FriendRequest.countDocuments({
       $or: [
         { sender: req.user._id, status: 'accepted' },
         { receiver: req.user._id, status: 'accepted' }
@@ -166,7 +167,7 @@ export async function listFriends(req, res) {
     });
     
     // Find accepted friend requests with pagination
-    const friendRequests = await find({
+    const friendRequests = await FriendRequest.find({
       $or: [
         { sender: req.user._id, status: 'accepted' },
         { receiver: req.user._id, status: 'accepted' }
@@ -185,7 +186,7 @@ export async function listFriends(req, res) {
     });
     
     // Create pagination metadata
-    const pagination = require('../utils/pagination').default.createPaginationMeta(page, limit, totalFriendRequests);
+    const pagination = createPaginationMeta(page, limit, totalFriendRequests);
     
     res.json({
       friends,
@@ -195,23 +196,23 @@ export async function listFriends(req, res) {
     console.error('List friends error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
 // @route   GET /api/friends/requests/incoming
 // @desc    List incoming friend requests
 // @access  Private
-export async function listIncomingRequests(req, res) {
+export const listIncomingRequests = async (req, res) => {
   try {
-    const { page, limit, skip } = require('../utils/pagination').default.getPaginationOptions(req);
+    const { page, limit, skip } = getPaginationOptions(req);
     
     // Count total incoming requests
-    const totalItems = await countDocuments({
+    const totalItems = await FriendRequest.countDocuments({
       receiver: req.user._id,
       status: 'pending'
     });
     
     // Find pending friend requests where user is receiver with pagination
-    const requests = await find({
+    const requests = await FriendRequest.find({
       receiver: req.user._id,
       status: 'pending'
     })
@@ -220,7 +221,7 @@ export async function listIncomingRequests(req, res) {
     .limit(limit);
     
     // Create pagination metadata
-    const pagination = require('../utils/pagination').default.createPaginationMeta(page, limit, totalItems);
+    const pagination = createPaginationMeta(page, limit, totalItems);
     
     res.json({
       requests,
@@ -230,23 +231,23 @@ export async function listIncomingRequests(req, res) {
     console.error('List incoming requests error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
 
 // @route   GET /api/friends/requests/outgoing
 // @desc    List outgoing friend requests
 // @access  Private
-export async function listOutgoingRequests(req, res) {
+export const listOutgoingRequests = async (req, res) => {
   try {
-    const { page, limit, skip } = require('../utils/pagination').default.getPaginationOptions(req);
+    const { page, limit, skip } = getPaginationOptions(req);
     
     // Count total outgoing requests
-    const totalItems = await countDocuments({
+    const totalItems = await FriendRequest.countDocuments({
       sender: req.user._id,
       status: 'pending'
     });
     
     // Find pending friend requests where user is sender with pagination
-    const requests = await find({
+    const requests = await FriendRequest.find({
       sender: req.user._id,
       status: 'pending'
     })
@@ -255,7 +256,7 @@ export async function listOutgoingRequests(req, res) {
     .limit(limit);
     
     // Create pagination metadata
-    const pagination = require('../utils/pagination').default.createPaginationMeta(page, limit, totalItems);
+    const pagination = createPaginationMeta(page, limit, totalItems);
     
     res.json({
       requests,
@@ -265,4 +266,4 @@ export async function listOutgoingRequests(req, res) {
     console.error('List outgoing requests error:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
-}
+};
