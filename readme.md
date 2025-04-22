@@ -65,19 +65,6 @@ API Endpoints
 Authentication
 Register a User
 POST /api/auth/register
-Request body:
-json{
-  "name": "suryakanth",
-  "email": "surya@example.com",
-  "password": "password123"
-}
-Login
-POST /api/auth/login
-Request body:
-json{
-  "email": "surya@example.com",
-  "password": "password123"
-}
 Google Authentication
 GET /api/auth/google
 Get Current User
@@ -87,33 +74,6 @@ Authorization: Bearer YOUR_JWT_TOKEN
 User Management
 Get All Users (Except Self)
 GET /api/users?page=1&limit=10
-Headers:
-Authorization: Bearer YOUR_JWT_TOKEN
-Response:
-json{
-  "users": [
-    {
-      "_id": "60d5ec9af682fbd12a456789",
-      "name": "bhavana",
-      "email": "bhavana@example.com",
-      "bio": "Software Engineer"
-    },
-    {
-      "_id": "60d5ec9af682fbd12a456790",
-      "name": "mahesh babu",
-      "email": "babu@example.com",
-      "bio": "UI Designer"
-    }
-  ],
-  "pagination": {
-    "currentPage": 1,
-    "itemsPerPage": 10,
-    "totalItems": 25,
-    "totalPages": 3,
-    "hasNextPage": true,
-    "hasPrevPage": false
-  }
-}
 Get User Profile
 GET /api/users/me
 Headers:
@@ -122,44 +82,7 @@ Update User Profile
 PUT /api/users/me
 Headers:
 Authorization: Bearer YOUR_JWT_TOKEN
-Request body:
-json{
-  "name": "surya Updated",
-  "bio": "Software Developer from California"
-}
-Get Friend Suggestions
-GET /api/users/suggestions
-Headers:
-Authorization: Bearer YOUR_JWT_TOKEN
-Search Users
-GET /api/users/search?query=John&page=1&limit=10
-Headers:
-Authorization: Bearer YOUR_JWT_TOKEN
-Response:
-json{
-  "users": [
-    {
-      "_id": "60d5ec9af682fbd12a456789",
-      "name": "mahesh babu",
-      "email": "babu@example.com",
-      "bio": "Software Engineer"
-    },
-    {
-      "_id": "60d5ec9af682fbd12a456790",
-      "name": "Johnny Walker",
-      "email": "johnny@example.com",
-      "bio": "UI Designer"
-    }
-  ],
-  "pagination": {
-    "currentPage": 1,
-    "itemsPerPage": 10,
-    "totalItems": 2,
-    "totalPages": 1,
-    "hasNextPage": false,
-    "hasPrevPage": false
-  }
-}
+
 Friend Management
 Send Friend Request
 POST /api/friends/request/:userId
@@ -177,31 +100,7 @@ List All Friends
 GET /api/friends?page=1&limit=10
 Headers:
 Authorization: Bearer YOUR_JWT_TOKEN
-Response:
-json{
-  "friends": [
-    {
-      "_id": "60d5ec9af682fbd12a456789",
-      "name": "no name",
-      "email": "hello@example.com",
-      "bio": "Software Engineer"
-    },
-    {
-      "_id": "60d5ec9af682fbd12a456790",
-      "name": "salaar",
-      "email": "salaar@example.com",
-      "bio": "UI Designer"
-    }
-  ],
-  "pagination": {
-    "currentPage": 1,
-    "itemsPerPage": 10,
-    "totalItems": 2,
-    "totalPages": 1,
-    "hasNextPage": false,
-    "hasPrevPage": false
-  }
-}
+
 List Incoming Friend Requests
 GET /api/friends/requests/incoming
 Headers:
@@ -233,15 +132,7 @@ json{
   "message": "Error message here"
 }
 For validation errors:
-json{
-  "errors": [
-    {
-      "msg": "Name is required",
-      "param": "name",
-      "location": "body"
-    }
-  ]
-}
+
 Security Considerations
 
 Passwords are hashed using bcrypt
