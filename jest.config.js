@@ -1,7 +1,18 @@
-export const testEnvironment = 'node';
-export const testMatch = ['**/__tests__/**/*.js', '**/?(*.)+(spec|test).js'];
-export const verbose = true;
-export const forceExit = true;
-export const clearMocks = true;
-export const resetMocks = true;
-export const restoreMocks = true;
+export default {
+    testEnvironment: 'node',
+    testMatch: ['**/__tests__/**/*.js', '**/?(*.)+(spec|test).js'],
+    verbose: true,
+    forceExit: true,
+    clearMocks: true,
+    resetMocks: true,
+    restoreMocks: true,
+    transform: {},
+    extensionsToTreatAsEsm: ['.js'],
+    moduleNameMapper: {
+      '^(\\.{1,2}/.*)\\.js$': '$1',
+    },
+    // For ES Modules
+    experimental: {
+      vm: true
+    }
+  };

@@ -4,7 +4,7 @@
  * @param {Object} defaultOptions - Default pagination options
  * @returns {Object} Pagination options
  */
-const getPaginationOptions = (req, defaultOptions = {}) => {
+export const getPaginationOptions = (req, defaultOptions = {}) => {
     const page = parseInt(req.query.page) || defaultOptions.page || 1;
     const limit = parseInt(req.query.limit) || defaultOptions.limit || 10;
     const skip = (page - 1) * limit;
@@ -23,7 +23,7 @@ const getPaginationOptions = (req, defaultOptions = {}) => {
    * @param {number} totalItems - Total number of items
    * @returns {Object} Pagination metadata
    */
-  const createPaginationMeta = (page, limit, totalItems) => {
+  export const createPaginationMeta = (page, limit, totalItems) => {
     const totalPages = Math.ceil(totalItems / limit);
     const hasNextPage = page < totalPages;
     const hasPrevPage = page > 1;
@@ -36,9 +36,4 @@ const getPaginationOptions = (req, defaultOptions = {}) => {
       hasNextPage,
       hasPrevPage
     };
-  };
-  
-  export default {
-    getPaginationOptions,
-    createPaginationMeta
   };
