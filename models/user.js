@@ -1,8 +1,8 @@
-import { Schema, model } from 'mongoose';
-import { genSalt, hash, compare } from 'bcryptjs';
-import { sign } from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -50,8 +50,8 @@ UserSchema.pre('save', async function(next) {
   
   // Hash password
   try {
-    const salt = await genSalt(10);
-    this.password = await hash(this.password, salt);
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
     next(error);
@@ -65,12 +65,12 @@ UserSchema.methods.matchPassword = async function(enteredPassword) {
     return false; // Don't allow password login for Google users
   }
   
-  return await compare(enteredPassword, this.password);
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // Method to generate JWT
 UserSchema.methods.generateToken = function() {
-  return sign(
+  return jwt.sign(
     { id: this._id },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRE }
@@ -84,4 +84,4 @@ UserSchema.methods.toJSON = function() {
   return user;
 };
 
-export default model('User', UserSchema);
+export default mongoose.model('User', UserSchema);

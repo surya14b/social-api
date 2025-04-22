@@ -1,13 +1,13 @@
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
 
-const FriendRequestSchema = new Schema({
+const FriendRequestSchema = new mongoose.Schema({
   sender: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
   receiver: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -27,4 +27,4 @@ const FriendRequestSchema = new Schema({
 // Compound index to ensure uniqueness
 FriendRequestSchema.index({ sender: 1, receiver: 1 }, { unique: true });
 
-export default model('FriendRequest', FriendRequestSchema);
+export default mongoose.model('FriendRequest', FriendRequestSchema);
