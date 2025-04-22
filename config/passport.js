@@ -1,8 +1,8 @@
 import passport, { use } from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import User, { findOne } from '../models/User';
+import User, { findOne } from '../models/user.js';
 
-use(
+passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,

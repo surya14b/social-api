@@ -1,5 +1,5 @@
-import User, { findOne } from '../models/user';
-import { authenticate } from '../config/passport';
+import User, { findOne } from '../models/user.js';
+import { authenticate } from '../config/passport.js';
 
 // @route   POST /api/auth/register
 // @desc    Register a user

@@ -1,6 +1,6 @@
 import { Error } from 'mongoose';
-import FriendRequest, { findOne, findById, countDocuments, find } from '../models/friendRequest';
-import { findById as _findById } from '../models/user';
+import FriendRequest, { findOne, findById, countDocuments, find } from '../models/friendRequest.js';
+import { findById as _findById } from '../models/user.js';
 
 // @route   POST /api/friends/request/:userId
 // @desc    Send friend request

@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import { sendFriendRequest, acceptFriendRequest, rejectFriendRequest, listFriends, listIncomingRequests, listOutgoingRequests } from '../controllers/friendController';
 import auth from '../middleware/auth';
+import friendController from '../controllers/friendController.js';
 
 // @route   POST /api/friends/request/:userId
 // @desc    Send friend request

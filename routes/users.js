@@ -3,6 +3,7 @@ const router = Router();
 import { getAllUsers, getProfile, updateProfile, getFriendSuggestions, searchUsers } from '../controllers/userController';
 import auth from '../middleware/auth';
 import { profileUpdateValidation, validate } from '../middleware/validation';
+import userController from '../controllers/userController.js';
 
 // @route   GET /api/users
 // @desc    Get all users except self

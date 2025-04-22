@@ -1,5 +1,5 @@
-import { countDocuments, find, findById, aggregate } from '../models/user';
-import { find as _find } from '../models/friendRequest';
+import { countDocuments, find, findById, aggregate } from '../models/user.js';
+import { find as _find } from '../models/friendRequest.js';
 
 // @route   GET /api/users
 // @desc    Get all users except self

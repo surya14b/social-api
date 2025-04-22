@@ -1,9 +1,16 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const connectDB = require('./config/db');
-const errorHandler = require('./utils/errorHandler');
-require('dotenv').config();
+// server.js
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import { config } from 'dotenv';
+import connectDB from './config/db.js';
+import errorHandler from './utils/errorHandler.js';
+import authRoutes from './routes/auth.js';
+import userRoutes from './routes/users.js';
+import friendRoutes from './routes/friends.js';
+
+// Load environment variables
+config();
 
 // Connect to database
 connectDB();
@@ -17,9 +24,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/users', require('./routes/users'));
-app.use('/api/friends', require('./routes/friends'));
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/friends', friendRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

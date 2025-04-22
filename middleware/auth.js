@@ -1,5 +1,5 @@
 import { verify } from 'jsonwebtoken';
-import { findById } from '../models/user';
+import { findById } from '../models/user.js';
 
 const auth = async (req, res, next) => {
   try {

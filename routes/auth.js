@@ -1,8 +1,9 @@
 import { Router } from 'express';
-const router = Router();
-import { register, login, googleAuth, googleCallback, getCurrentUser } from '../controllers/authController';
+const router = express.Router();
+import { register, login, googleAuth, googleCallback, getCurrentUser } from '../controllers/authController.js';
 import auth from '../middleware/auth';
 import { registerValidation, loginValidation, validate } from '../middleware/validation';
+import authController from '../controllers/authController.js';
 
 // @route   POST /api/auth/register
 // @desc    Register a user
