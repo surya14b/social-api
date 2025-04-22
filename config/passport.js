@@ -1,6 +1,6 @@
-import passport, { use } from 'passport';
+import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import User, { findOne } from '../models/user.js';
+import User from '../models/user.js';
 
 passport.use(
   new GoogleStrategy(
@@ -12,7 +12,7 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         // Check if user already exists
-        let user = await findOne({ email: profile.emails[0].value });
+        let user = await User.findOne({ email: profile.emails[0].value });
         
         if (user) {
           return done(null, user);
@@ -37,11 +37,3 @@ passport.use(
 );
 
 export default passport;
-// This file is responsible for configuring the Google OAuth strategy using Passport.js.
-// It uses the GoogleStrategy from the passport-google-oauth20 package to authenticate users.
-// The strategy is configured with the client ID, client secret, and callback URL from environment variables.
-// When a user is authenticated, it checks if the user already exists in the database.
-// If the user exists, it returns the user object. If not, it creates a new user with the information from the Google profile.
-// The user is then saved to the database, and the user object is returned.
-// The module exports the configured passport instance for use in other parts of the application.
-// This file is responsible for configuring the Google OAuth strategy using Passport.js.
