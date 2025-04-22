@@ -1,5 +1,5 @@
-import { verify } from 'jsonwebtoken';
-import { findById } from '../models/user.js';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 
 const auth = async (req, res, next) => {
   try {
@@ -11,10 +11,10 @@ const auth = async (req, res, next) => {
     }
     
     // Verify token
-    const decoded = verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Check if user exists
-    const user = await findById(decoded.id);
+    const user = await User.findById(decoded.id);
     
     if (!user) {
       return res.status(401).json({ message: 'User not found' });
