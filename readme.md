@@ -120,87 +120,64 @@ Headers: Authorization: Bearer <TOKEN>
 👤 User Management
 Get All Users (Except Self)
 
-pgsql
-Copy
-Edit
+
 GET /api/users?page=1&limit=10
 Headers: Authorization: Bearer <TOKEN>
 Get Own Profile
 
-vbnet
-Copy
-Edit
+
 GET /api/users/me
 Headers: Authorization: Bearer <TOKEN>
 Update Profile
 
-vbnet
-Copy
-Edit
+
 PUT /api/users/me
 Headers: Authorization: Bearer <TOKEN>
 json
-Copy
-Edit
+
 {
   "name": "surya Updated",
   "bio": "Software Developer from California"
 }
 Friend Suggestions
 
-sql
-Copy
-Edit
+
 GET /api/users/suggestions
 Headers: Authorization: Bearer <TOKEN>
 Search Users
 
-pgsql
-Copy
-Edit
+
 GET /api/users/search?query=John&page=1&limit=10
 Headers: Authorization: Bearer <TOKEN>
 🤝 Friend Management
 Send Friend Request
 
-swift
-Copy
-Edit
+
 POST /api/friends/request/:userId
 Headers: Authorization: Bearer <TOKEN>
 Accept Friend Request
 
-ruby
-Copy
-Edit
+
 PUT /api/friends/request/:requestId/accept
 Headers: Authorization: Bearer <TOKEN>
 Reject Friend Request
 
-ruby
-Copy
-Edit
+
 PUT /api/friends/request/:requestId/reject
 Headers: Authorization: Bearer <TOKEN>
 List Friends
 
-pgsql
-Copy
-Edit
+
 GET /api/friends?page=1&limit=10
 Headers: Authorization: Bearer <TOKEN>
 List Incoming Friend Requests
 
-sql
-Copy
-Edit
+
 GET /api/friends/requests/incoming
 Headers: Authorization: Bearer <TOKEN>
 List Outgoing Friend Requests
 
-sql
-Copy
-Edit
+
 GET /api/friends/requests/outgoing
 Headers: Authorization: Bearer <TOKEN>
 🧩 Database Schema
