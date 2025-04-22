@@ -45,15 +45,11 @@ A RESTful API for a social platform with user authentication, profile management
    cd social-api
 Install dependencies
 
-bash
-Copy
-Edit
+
+
 npm install
 Create a .env file
 
-ini
-Copy
-Edit
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/socialapi
 JWT_SECRET=your_jwt_secret_key
@@ -64,9 +60,6 @@ GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
 FRONTEND_URL=http://localhost:3000
 Start the server
 
-bash
-Copy
-Edit
 # Development with auto-reload
 npm run dev
 
@@ -79,13 +72,10 @@ npm test
 🔐 Authentication
 Register
 
-arduino
-Copy
-Edit
+
 POST /api/auth/register
 json
-Copy
-Edit
+
 {
   "name": "suryakanth",
   "email": "surya@example.com",
@@ -93,28 +83,19 @@ Edit
 }
 Login
 
-bash
-Copy
-Edit
+
 POST /api/auth/login
-json
-Copy
-Edit
+
 {
   "email": "surya@example.com",
   "password": "password123"
 }
 Google OAuth
 
-bash
-Copy
-Edit
+
 GET /api/auth/google
 Get Current User
 
-vbnet
-Copy
-Edit
 GET /api/auth/me
 Headers: Authorization: Bearer <TOKEN>
 👤 User Management
@@ -200,15 +181,13 @@ createdAt	Date	Request creation timestamp
 🚫 Error Handling
 General Errors
 json
-Copy
-Edit
+
 {
   "message": "Error message here"
 }
 Validation Errors
 json
-Copy
-Edit
+
 {
   "errors": [
     {
