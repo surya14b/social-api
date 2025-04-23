@@ -285,8 +285,8 @@ This document provides example `curl` commands for testing various endpoints in 
 curl -X POST http://localhost:5001/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "John Doe",
-    "email": "john@example.com",
+    "name": "suryakanth",
+    "email": "surya@example.com",
     "password": "password123"
   }'
 ```
@@ -296,7 +296,7 @@ curl -X POST http://localhost:5001/api/auth/register \
 curl -X POST http://localhost:5001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "john@example.com",
+    "email": "surya@example.com",
     "password": "password123"
   }'
 ```
@@ -329,7 +329,7 @@ curl -X PUT http://localhost:5001/api/users/me \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{
-    "name": "John Updated",
+    "name": "surya Updated",
     "bio": "Software Developer from California"
   }'
 ```
