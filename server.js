@@ -1,7 +1,7 @@
+import { config } from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import { config } from 'dotenv';
 import connectDB from './config/db.js';
 import errorHandler from './utils/errorHandler.js';
 import authRoutes from './routes/auth.js';
