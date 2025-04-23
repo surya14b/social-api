@@ -272,13 +272,138 @@ Authorization: Bearer <TOKEN>
 
 ---
 
-## 🔎 Testing Workflow
+# 📱 Social API - Testing Guide
 
-1. Register at least 2–3 different users.
-2. Login with each user and save their JWT tokens.
-3. Use one user's token to send friend requests to the others.
-4. Use the other users' tokens to accept or reject those requests.
-5. Use listing endpoints to verify the results.
+This document provides example `curl` commands for testing various endpoints in your Social API. Use this as a reference to quickly test authentication, user management, and friend-related features.
+
+---
+
+## 🔐 Authentication
+
+### 📝 Register a User
+```bash
+curl -X POST http://localhost:5001/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+### 🔑 Login
+```bash
+curl -X POST http://localhost:5001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+### 👤 Get Current Authenticated User
+```bash
+curl -X GET http://localhost:5001/api/auth/me \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+---
+
+## 👥 User Management
+
+### 📋 Get All Users (Except Self)
+```bash
+curl -X GET "http://localhost:5001/api/users?page=1&limit=10" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### 👭 Get Own Profile
+```bash
+curl -X GET http://localhost:5001/api/users/me \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### ✏️ Update Own Profile
+```bash
+curl -X PUT http://localhost:5001/api/users/me \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "name": "John Updated",
+    "bio": "Software Developer from California"
+  }'
+```
+
+### 🤝 Get Friend Suggestions
+```bash
+curl -X GET http://localhost:5001/api/users/suggestions \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### 🔍 Search Users
+```bash
+curl -X GET "http://localhost:5001/api/users/search?query=John&page=1&limit=10" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+---
+
+## 👬 Friend Management
+
+### ➕ Send Friend Request
+```bash
+curl -X POST http://localhost:5001/api/friends/request/USER_ID_TO_FRIEND \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### ✅ Accept Friend Request
+```bash
+curl -X PUT http://localhost:5001/api/friends/request/REQUEST_ID/accept \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### ❌ Reject Friend Request
+```bash
+curl -X PUT http://localhost:5001/api/friends/request/REQUEST_ID/reject \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### 📃 List All Friends
+```bash
+curl -X GET "http://localhost:5001/api/friends?page=1&limit=10" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### 📥 List Incoming Friend Requests
+```bash
+curl -X GET "http://localhost:5001/api/friends/requests/incoming?page=1&limit=10" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### 📤 List Outgoing Friend Requests
+```bash
+curl -X GET "http://localhost:5001/api/friends/requests/outgoing?page=1&limit=10" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+---
+
+## 🧪 Testing Workflow
+
+1. **Register** at least 2–3 different users.
+2. **Login** with each user and **save their tokens**.
+3. Use one user's token to **send friend requests** to other users.
+4. Use the other users' tokens to **accept or reject** those requests.
+5. Use listing endpoints to **verify** the friend request actions.
+
+---
+
+## 🔀 Placeholders to Replace
+
+- `YOUR_JWT_TOKEN`: Replace with the token received after logging in.
+- `USER_ID_TO_FRIEND`: MongoDB `_id` of the user you want to send a friend request to.
+- `REQUEST_ID`: MongoDB `_id` of the friend request to accept or reject.
+
 
 ---
 
